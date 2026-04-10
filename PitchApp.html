@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KI-Spotlight Pitch-Event</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ppb: 'rgb(200, 30, 130)',
+                        ppm: 'rgb(120, 10, 95)',
+                        ffb: 'rgb(230, 0, 85)',
+                        ffm: 'rgb(165, 0, 50)',
+                        rrb: 'rgb(235, 75, 10)',
+                        rrm: 'rgb(185, 40, 10)',
+                        myb: 'rgb(245, 155, 0)',
+                        mym: 'rgb(210, 115, 0)',
+                        ggb: 'rgb(100, 180, 45)',
+                        ggm: 'rgb(0, 135, 90)',
+                        bbb: 'rgb(0, 155, 165)',
+                        bbm: 'rgb(0, 95, 105)',
+                        iib: 'rgb(0, 170, 225)',
+                        iim: 'rgb(20, 60, 140)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --ppb: rgb(200, 30, 130);
+            --ppm: rgb(120, 10, 95);
+            --ffb: rgb(230, 0, 85);
+            --ffm: rgb(165, 0, 50);
+            --rrb: rgb(235, 75, 10);
+            --rrm: rgb(185, 40, 10);
+            --myb: rgb(245, 155, 0);
+            --mym: rgb(210, 115, 0);
+            --ggb: rgb(100, 180, 45);
+            --ggm: rgb(0, 135, 90);
+            --bbb: rgb(0, 155, 165);
+            --bbm: rgb(0, 95, 105);
+            --iib: rgb(0, 170, 225);
+            --iim: rgb(20, 60, 140);
+        }
+
+        body {
+            font-family: 'Calibri', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overscroll-behavior-y: contain;
+            background: radial-gradient(at 0% 0%, rgba(0, 170, 225, 0.08) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(200, 30, 130, 0.08) 0px, transparent 50%);
+        }
+
+        .header-gradient {
+            background-image: linear-gradient(160deg, var(--iim) 0%, var(--ppm) 55%, var(--ffm) 100%);
+        }
+
+        .tab-active {
+            border-bottom: 4px solid var(--iib);
+            color: var(--iib);
+            font-weight: bold;
+        }
+
+        /* Dark Mode Switcher */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 64px;
+            height: 32px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            transition: .4s;
+            border-radius: 34px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "🌙";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--iib);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+            content: "☀️";
+        }
+
+        /* LIVE HIGHLIGHTING EFFEKT - VERSTÄRKT */
+        .agenda-active {
+            border: 3px solid var(--ggb) !important;
+            background: white !important;
+            transform: scale(1.04);
+            z-index: 20;
+            position: relative;
+            animation: pulse-card 2s infinite ease-in-out;
+        }
+
+        .dark .agenda-active {
+            background: #1e293b !important;
+        }
+
+        @keyframes pulse-card {
+            0% { box-shadow: 0 0 0 0px rgba(100, 180, 45, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(100, 180, 45, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(100, 180, 45, 0); }
+        }
+
+        .agenda-active::before {
+            content: 'LIVE';
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: var(--ggb);
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 14px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 30;
+        }
+
+        /* Styling für Pausen */
+        .pause-item {
+            background-color: rgba(245, 155, 0, 0.08) !important;
+            border-left: 6px solid var(--myb) !important;
+        }
+        
+        .lunch-item {
+            background-color: rgba(200, 30, 130, 0.08) !important;
+            border-left: 6px solid var(--ppb) !important;
+        }
+
+        .dark .pause-item { background-color: rgba(245, 155, 0, 0.15) !important; }
+        .dark .lunch-item { background-color: rgba(200, 30, 130, 0.15) !important; }
+
+    </style>
+</head>
+<body class="max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-500">
+
+    <!-- Header -->
+    <header class="header-gradient px-6 pt-12 pb-10 text-white text-center relative shadow-2xl overflow-hidden">
+        <div class="absolute top-4 right-4">
+            <label class="toggle-switch">
+                <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+        <div class="flex flex-col items-center relative z-10">
+            <div class="relative mb-4 cursor-pointer active:scale-95 transition-transform" onclick="simulateEventTime()">
+                <div class="absolute inset-0 bg-white/20 blur-2xl rounded-full"></div>
+                <img src="image_381210.png" alt="KI Logo" class="relative w-24 h-24 rounded-full border-4 border-white/30 p-3 bg-black/40 backdrop-blur-md">
+                <div class="absolute -bottom-2 -right-2 bg-ggb text-white text-[8px] font-bold px-2 py-1 rounded-full opacity-0" id="test-indicator">TEST MODE</div>
+            </div>
+            <h1 class="text-3xl font-black tracking-tighter drop-shadow-lg uppercase">KI-Spotlights</h1>
+            <div class="mt-3 inline-block px-5 py-1.5 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
+                <p class="text-[10px] font-black tracking-[0.3em] uppercase">Pitch-Event • 04. Mai</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="flex bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b dark:border-slate-800 sticky top-0 z-30 shadow-sm">
+        <button id="tab-agenda-btn" onclick="switchTab('agenda')" class="flex-1 py-5 text-center text-xs font-black tracking-widest text-slate-400 dark:text-slate-500 tab-active transition-all">
+            AGENDA
+        </button>
+        <button id="tab-tandems-btn" onclick="switchTab('tandems')" class="flex-1 py-5 text-center text-xs font-black tracking-widest text-slate-400 dark:text-slate-500 transition-all">
+            TANDEMS
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-5 overflow-y-auto">
+        
+        <!-- Agenda -->
+        <section id="tab-agenda" class="space-y-4 pb-16">
+            
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="09:00" data-end="09:15">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">09:00 - 09:15</div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-sm">Begrüßung</h3>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">Intro & Agenda</p>
+                </div>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="09:15" data-end="09:30">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">09:15 - 09:30</div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-sm text-ffm dark:text-ffb">Einführung</h3>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">Regeln & Timekeeping</p>
+                </div>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="09:30" data-end="10:30">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">09:30 - 10:30</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs">📢</span>
+                        <h3 class="font-black text-sm uppercase text-iim dark:text-iib">Pitch Runde 1</h3>
+                    </div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">3 Teams (je 17 Min)</p>
+                </div>
+            </div>
+
+            <div class="agenda-item pause-item card p-4 rounded-3xl bg-white dark:bg-slate-900 shadow-sm flex items-center gap-5 transition-all duration-500" data-start="10:30" data-end="10:45">
+                <div class="text-[11px] font-black w-24 text-mym shrink-0 border-r border-slate-100 dark:border-slate-800 pr-3">10:30 - 10:45</div>
+                <h3 class="font-black text-sm flex items-center gap-2 text-mym uppercase tracking-wider">☕ Kaffeepause</h3>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="10:45" data-end="11:45">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">10:45 - 11:45</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs">📢</span>
+                        <h3 class="font-black text-sm uppercase text-iim dark:text-iib">Pitch Runde 2</h3>
+                    </div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">3 Teams</p>
+                </div>
+            </div>
+
+            <div class="agenda-item lunch-item card p-4 rounded-3xl bg-white dark:bg-slate-900 shadow-sm flex items-center gap-5 transition-all duration-500" data-start="11:45" data-end="12:45">
+                <div class="text-[11px] font-black w-24 text-ppm shrink-0 border-r border-slate-100 dark:border-slate-800 pr-3">11:45 - 12:45</div>
+                <h3 class="font-black text-sm flex items-center gap-2 text-ppm uppercase tracking-wider">🍴 Mittagspause</h3>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="12:45" data-end="13:00">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">12:45 - 13:00</div>
+                <h3 class="font-bold text-sm flex items-center gap-2">⚡ Energizer</h3>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="13:00" data-end="14:20">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">13:00 - 14:20</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs">📢</span>
+                        <h3 class="font-black text-sm uppercase text-iim dark:text-iib">Pitch Runde 3</h3>
+                    </div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">4 Teams</p>
+                </div>
+            </div>
+
+            <div class="agenda-item pause-item card p-4 rounded-3xl bg-white dark:bg-slate-900 shadow-sm flex items-center gap-5 transition-all duration-500" data-start="14:20" data-end="14:45">
+                <div class="text-[11px] font-black w-24 text-mym shrink-0 border-r border-slate-100 dark:border-slate-800 pr-3">14:20 - 14:45</div>
+                <h3 class="font-black text-sm flex items-center gap-2 text-mym uppercase tracking-wider">☕ Kaffeepause</h3>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="14:45" data-end="16:05">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">14:45 - 16:05</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs">📢</span>
+                        <h3 class="font-black text-sm uppercase text-iim dark:text-iib">Pitch Runde 4</h3>
+                    </div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black opacity-60">4 Teams</p>
+                </div>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="16:15" data-end="16:30">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 border-r border-slate-100 dark:border-slate-800 pr-3">16:15 - 16:30</div>
+                <h3 class="font-black text-sm uppercase">Abschluss</h3>
+            </div>
+
+            <div class="agenda-item card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500" data-start="16:30" data-end="23:59">
+                <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 border-r border-slate-100 dark:border-slate-800 pr-3">ab 16:30</div>
+                <h3 class="font-black text-sm uppercase">🥂 Networking</h3>
+            </div>
+        </section>
+
+        <!-- Tandems -->
+        <section id="tab-tandems" class="hidden space-y-6 pb-16">
+            <div id="tandem-list" class="grid gap-6"></div>
+        </section>
+
+    </main>
+
+    <footer class="p-8 bg-white dark:bg-slate-900 text-center text-[10px] font-black tracking-[0.2em] text-slate-400 dark:text-slate-600 border-t dark:border-slate-800 uppercase">
+        KI-Spotlight Pitch-Day • 2026
+    </footer>
+
+    <script>
+        let isSimulationActive = false;
+        const tandems = [
+            { id: 1, fb: "Marketing", de: "Julia Schmidt", fk: "Dr. Marc Weber", link: "#" },
+            { id: 2, fb: "Logistik", de: "Lars Müller", fk: "Sabine Meyer", link: "#" },
+            { id: 3, fb: "Produktion", de: "Tim Becker", fk: "Andreas Wagner", link: "#" },
+            { id: 4, fb: "Personal", de: "Sarah Klein", fk: "Monika Fischer", link: "#" },
+            { id: 5, fb: "IT", de: "Felix Jung", fk: "Ralf Bauer", link: "#" },
+            { id: 6, fb: "Vertrieb", de: "Anna Neumann", fk: "Thomas Krüger", link: "#" },
+            { id: 7, fb: "Einkauf", de: "Christian Wolf", fk: "Petra Hoffmann", link: "#" },
+            { id: 8, fb: "Service", de: "Elena Berger", fk: "Uwe Schulze", link: "#" },
+            { id: 9, fb: "Finanzen", de: "Simon Schwarz", fk: "Katrin Peters", link: "#" },
+            { id: 10, fb: "F&E", de: "Laura Weiß", fk: "Bernd Lange", link: "#" },
+            { id: 11, fb: "Qualität", de: "Moritz Koch", fk: "H. Richter", link: "#" },
+            { id: 12, fb: "Recht", de: "Vanessa Roth", fk: "Joachim Fuchs", link: "#" },
+            { id: 13, fb: "PR", de: "Nico Frank", fk: "Doris Kaiser", link: "#" },
+            { id: 14, fb: "S. Chain", de: "Svenja Berg", fk: "Harald Scholz", link: "#" }
+        ];
+
+        function initTandems() {
+            const container = document.getElementById('tandem-list');
+            container.innerHTML = '';
+            tandems.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'card p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl active:scale-95 transition-transform';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-5">
+                        <span class="text-[10px] font-black uppercase text-iib tracking-widest bg-iib/10 px-3 py-1.5 rounded-lg border border-iib/20">${t.fb}</span>
+                        <span class="text-[10px] font-black bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">#${t.id}</span>
+                    </div>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Digital Enthusiast</span>
+                            <span class="text-md font-black text-iim dark:text-iib">${t.de}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Führungskraft</span>
+                            <span class="text-md font-black text-ffm dark:text-ffb">${t.fk}</span>
+                        </div>
+                    </div>
+                    <a href="${t.link}" class="w-full bg-gradient-to-r from-iib to-iim text-white text-center py-4 rounded-2xl text-xs font-black shadow-lg shadow-iib/25 block tracking-widest active:brightness-90 uppercase">
+                        Feedback geben
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(tab) {
+            const agendaTab = document.getElementById('tab-agenda');
+            const tandemsTab = document.getElementById('tab-tandems');
+            const agendaBtn = document.getElementById('tab-agenda-btn');
+            const tandemsBtn = document.getElementById('tab-tandems-btn');
+
+            if (tab === 'agenda') {
+                agendaTab.classList.remove('hidden');
+                tandemsTab.classList.add('hidden');
+                agendaBtn.classList.add('tab-active');
+                tandemsBtn.classList.remove('tab-active');
+            } else {
+                agendaTab.classList.add('hidden');
+                tandemsTab.classList.remove('hidden');
+                agendaBtn.classList.remove('tab-active');
+                tandemsBtn.classList.add('tab-active');
+                initTandems();
+            }
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const toggle = document.getElementById('dark-mode-toggle');
+            if (toggle.checked) {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            } else {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            }
+        }
+
+        function simulateEventTime() {
+            isSimulationActive = !isSimulationActive;
+            const indicator = document.getElementById('test-indicator');
+            indicator.style.opacity = isSimulationActive ? "1" : "0";
+            updateAgendaHighlighting();
+        }
+
+        function updateAgendaHighlighting() {
+            const now = new Date();
+            // Wenn Simulation aktiv, setzen wir die Zeit fest auf 10:00 Uhr (während Pitch Runde 1)
+            let currentMinutes = now.getHours() * 60 + now.getMinutes();
+            if (isSimulationActive) {
+                currentMinutes = 10 * 60 + 0; // 10:00 Uhr
+            }
+
+            document.querySelectorAll('.agenda-item').forEach(item => {
+                const startStr = item.getAttribute('data-start');
+                const endStr = item.getAttribute('data-end');
+                
+                const [startH, startM] = startStr.split(':').map(Number);
+                const [endH, endM] = endStr.split(':').map(Number);
+                
+                const startTime = startH * 60 + startM;
+                const endTime = endH * 60 + endM;
+
+                if (currentMinutes >= startTime && currentMinutes < endTime) {
+                    item.classList.add('agenda-active');
+                } else {
+                    item.classList.remove('agenda-active');
+                }
+            });
+        }
+
+        // Dark Mode laden
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            const toggle = document.getElementById('dark-mode-toggle');
+            if(toggle) toggle.checked = true;
+        }
+
+        window.onload = function() {
+            initTandems();
+            updateAgendaHighlighting();
+            setInterval(updateAgendaHighlighting, 5000);
+        }
+    </script>
+</body>
+</html>
