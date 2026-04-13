@@ -317,8 +317,23 @@
         </section>
 
         <!-- Tandems Section -->
-        <section id="tab-tandems" class="hidden space-y-6 pb-16">
-            <div id="tandem-list" class="grid gap-6"></div>
+        <section id="tab-tandems" class="hidden space-y-4 pb-16">
+            <div id="tandem-list" class="grid gap-4"></div>
+            
+            <!-- Legende -->
+            <div class="mt-8 p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Legende</h4>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2.5 h-2.5 rounded-full bg-iib"></span>
+                        <p class="text-xs"><span class="font-black">DE</span>: Digital Enthusiast</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-2.5 h-2.5 rounded-full bg-ffm"></span>
+                        <p class="text-xs"><span class="font-black">FK</span>: Führungskraft</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -350,25 +365,32 @@
             container.innerHTML = '';
             tandems.forEach(t => {
                 const card = document.createElement('div');
-                card.className = 'card p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl active:scale-95 transition-transform';
+                card.className = 'card p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center gap-5 transition-all duration-500 active:scale-95';
                 card.innerHTML = `
-                    <div class="flex justify-between items-center mb-5">
-                        <span class="text-[10px] font-black uppercase text-iib tracking-widest bg-iib/10 px-3 py-1.5 rounded-lg border border-iib/20">${t.fb}</span>
-                        <span class="text-[10px] font-black bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">#${t.id}</span>
+                    <div class="text-[11px] font-black w-24 text-iim dark:text-iib shrink-0 leading-tight border-r border-slate-100 dark:border-slate-800 pr-3">
+                        PITCH ${t.id < 10 ? '0' + t.id : t.id}
                     </div>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Digital Enthusiast</span>
-                            <span class="text-md font-black text-iim dark:text-iib">${t.de}</span>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-black text-[10px] uppercase text-iib tracking-widest opacity-80 mb-1">${t.fb}</h3>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-iib"></span>
+                                    <span class="text-xs font-bold">${t.de}</span>
+                                    <span class="text-[8px] font-black uppercase opacity-40">DE</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-ffm"></span>
+                                    <span class="text-xs font-bold">${t.fk}</span>
+                                    <span class="text-[8px] font-black uppercase opacity-40">FK</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Führungskraft</span>
-                            <span class="text-md font-black text-ffm dark:text-ffb">${t.fk}</span>
-                        </div>
+                        <!-- Optimierter Feedback-Button im Mellow Yellow Stil -->
+                        <a href="${t.link}" class="mt-4 text-[10px] font-black text-center py-3 px-4 rounded-2xl bg-myb/10 dark:bg-myb/20 text-mym dark:text-myb border border-myb/30 hover:bg-myb/20 transition-all uppercase tracking-widest">
+                            Feedback geben
+                        </a>
                     </div>
-                    <a href="${t.link}" class="w-full bg-gradient-to-r from-iib to-iim text-white text-center py-4 rounded-2xl text-xs font-black shadow-lg shadow-iib/25 block tracking-widest active:brightness-90 uppercase">
-                        Feedback geben
-                    </a>
                 `;
                 container.appendChild(card);
             });
