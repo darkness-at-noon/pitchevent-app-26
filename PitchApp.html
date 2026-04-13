@@ -202,9 +202,11 @@
                 <div class="absolute inset-0 bg-white/20 blur-2xl rounded-full"></div>
                 <img src="image_381210.png" alt="KI Logo" class="relative w-24 h-24 rounded-full border-4 border-white/30 p-3 bg-black/40 backdrop-blur-md">
             </div>
-            <h1 class="text-3xl font-black tracking-tighter drop-shadow-lg uppercase">KI-Spotlights</h1>
-            <div class="mt-3 inline-block px-5 py-1.5 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
-                <p class="text-[10px] font-black tracking-[0.3em] uppercase">Pitch-Event • 04. Mai</p>
+            <h1 class="text-3xl font-black tracking-tighter drop-shadow-lg uppercase text-white">KI-Spotlights</h1>
+            <div class="mt-3 inline-block px-5 py-2 rounded-2xl bg-black/20 backdrop-blur-md border border-white/10">
+                <p class="text-[10px] font-black tracking-[0.2em] uppercase text-white">Pitch-Event • 04. Mai</p>
+                <!-- NEU: Veranstaltungsort -->
+                <p class="text-[10px] font-bold tracking-[0.05em] uppercase text-white/80 mt-1">Energy Club F 00.103</p>
             </div>
         </div>
     </header>
@@ -343,6 +345,11 @@
     </footer>
 
     <script>
+        /**
+         * DYNAMISCHE PITCH-LISTE
+         * Hier kannst du einfach Tandems hinzufügen oder entfernen.
+         * Die App generiert die Ansicht automatisch basierend auf diesem Array.
+         */
         const tandems = [
             { id: 1, fb: "Marketing", de: "Julia Schmidt", fk: "Dr. Marc Weber", link: "#" },
             { id: 2, fb: "Logistik", de: "Lars Müller", fk: "Sabine Meyer", link: "#" },
@@ -376,17 +383,16 @@
                             <div class="space-y-1">
                                 <div class="flex items-center gap-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-iib"></span>
-                                    <span class="text-xs font-bold">${t.de}</span>
+                                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">${t.de}</span>
                                     <span class="text-[8px] font-black uppercase opacity-40">DE</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-ffm"></span>
-                                    <span class="text-xs font-bold">${t.fk}</span>
+                                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">${t.fk}</span>
                                     <span class="text-[8px] font-black uppercase opacity-40">FK</span>
                                 </div>
                             </div>
                         </div>
-                        <!-- Optimierter Feedback-Button im Mellow Yellow Stil -->
                         <a href="${t.link}" class="mt-4 text-[10px] font-black text-center py-3 px-4 rounded-2xl bg-myb/10 dark:bg-myb/20 text-mym dark:text-myb border border-myb/30 hover:bg-myb/20 transition-all uppercase tracking-widest">
                             Feedback geben
                         </a>
